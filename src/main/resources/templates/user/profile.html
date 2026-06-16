@@ -7,18 +7,10 @@
     <header th:replace="~{fragments/layout :: header}"></header>
 
     <main>
-        <div class="container" style="max-width: 600px;">
+        <div class="container profile-container" style="max-width: 600px;">
             <div class="home-intro" style="margin-bottom: 2rem;">
                 <h1>Meu Perfil</h1>
                 <p>Atualize suas informações pessoais e senha</p>
-            </div>
-
-            <!-- Feedback Messages -->
-            <div th:if="${success}" style="padding: 1rem; background: var(--cor-success); color: white; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
-                <span th:text="${success}"></span>
-            </div>
-            <div th:if="${error}" style="padding: 1rem; background: var(--cor-error); color: white; border-radius: 8px; margin-bottom: 1.5rem; text-align: center;">
-                <span th:text="${error}"></span>
             </div>
 
             <form th:action="@{/users/profile}" th:object="${user}" method="post">

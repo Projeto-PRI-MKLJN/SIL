@@ -139,6 +139,115 @@ const ModalManager = {
     }
 };
 
+const ConfirmDialogManager = {
+    dialog: null,
+    confirmBtn: null,
+    cancelBtn: null,
+    messageElement: null,
+    onConfirmCallback: null,
+
+    init() {
+        this.dialog = document.getElementById('custom-confirm-dialog');
+        if (!this.dialog) return;
+
+        this.confirmBtn = document.getElementById('confirm-dialog-confirm-btn');
+        this.cancelBtn = document.getElementById('confirm-dialog-cancel-btn');
+        this.messageElement = document.getElementById('confirm-dialog-message');
+
+        this.cancelBtn.addEventListener('click', () => this.close());
+        this.confirmBtn.addEventListener('click', () => {
+            if (this.onConfirmCallback) this.onConfirmCallback();
+            this.close();
+        });
+    },
+
+    open(message, onConfirm) {
+        if (!this.dialog) return;
+        this.messageElement.innerText = message;
+        this.onConfirmCallback = onConfirm;
+        this.dialog.showModal();
+        document.body.style.overflow = 'hidden';
+    },
+
+    close() {
+        if (!this.dialog) return;
+        this.dialog.close();
+        document.body.style.overflow = '';
+    }
+};
+
+const ToastManager = {
+    container: null,
+
+    init() {
+        this.container = document.getElementById('toast-container');
+        if (!this.container) return;
+
+        const successMsg = this.container.dataset.toastSuccess;
+        const errorMsg = this.container.dataset.toastError;
+        
+        if (successMsg && successMsg !== 'null' && successMsg !== '') {
+            this.show(successMsg, 'success');
+        }
+        if (errorMsg && errorMsg !== 'null' && errorMsg !== '') {
+            this.show(errorMsg, 'error');
+        }
+    },
+
+    show(message, type = 'success') {
+        if (!this.container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type} animate-slide-in`;
+        
+        const title = type === 'success' ? 'Sucesso' : 'Erro';
+        const iconSvg = type === 'success' ? `
+            <svg class="toast-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        ` : `
+            <svg class="toast-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        `;
+
+        toast.innerHTML = `
+            <div class="toast-icon-wrapper">${iconSvg}</div>
+            <div class="toast-content-wrapper">
+                <div class="toast-title">${title}</div>
+                <div class="toast-message">${message}</div>
+            </div>
+            <button class="toast-close" aria-label="Fechar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        `;
+
+        this.container.appendChild(toast);
+
+        const autoRemove = setTimeout(() => {
+            this.dismiss(toast);
+        }, 5000);
+
+        toast.querySelector('.toast-close').addEventListener('click', () => {
+            clearTimeout(autoRemove);
+            this.dismiss(toast);
+        });
+    },
+
+    dismiss(toast) {
+        toast.classList.add('animate-slide-out');
+        toast.addEventListener('animationend', () => {
+            toast.remove();
+        });
+    }
+};
+
+
+
 window.openEditSignModal = (data) => {
     const form = document.getElementById('sign-form');
     if (!form) return;
@@ -181,6 +290,8 @@ window.openEditUserModal = (data) => {
 document.addEventListener('DOMContentLoaded', () => {
     ThemeManager.init();
     MenuManager.init();
+    ConfirmDialogManager.init();
+    ToastManager.init();
     
     // Gerenciador de eventos delegado para evitar inline JS (CSP)
     document.body.addEventListener('click', (e) => {
@@ -206,7 +317,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const confirmBtn = target.closest('[data-confirm]');
-        if (confirmBtn && !confirm(confirmBtn.dataset.confirm)) e.preventDefault();
+        if (confirmBtn) {
+            e.preventDefault();
+            const message = confirmBtn.dataset.confirm;
+            const targetUrl = confirmBtn.getAttribute('href');
+            const targetForm = confirmBtn.closest('form');
+            
+            ConfirmDialogManager.open(message, () => {
+                if (targetUrl && targetUrl !== '#') {
+                    window.location.href = targetUrl;
+                } else if (targetForm) {
+                    targetForm.submit();
+                }
+            });
+        }
     });
 
     const searchInput = document.getElementById('search-input');

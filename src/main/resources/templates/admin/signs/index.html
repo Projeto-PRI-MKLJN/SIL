@@ -8,9 +8,9 @@
         <h1 style="font-family: 'Outfit', sans-serif;">Gerenciar Sinais</h1>
         <p style="margin-bottom: 2rem; color: var(--cor-text-secondary);" th:text="'Total de sinais cadastrados: ' + ${signs.size()}">Total: 0</p>
         
-        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem;">
-            <button data-modal-open="sign-modal" class="btn" style="display: inline-block;">+ Adicionar Novo Sinal</button>
-            <a th:href="@{/admin}" class="btn btn-secondary" style="display: inline-block; text-decoration: none;">← Voltar ao Painel Admin</a>
+        <div class="admin-actions" style="margin-bottom: 2rem;">
+            <button data-modal-open="sign-modal" class="btn">+ Adicionar Novo Sinal</button>
+            <a th:href="@{/admin}" class="btn btn-secondary">← Voltar ao Painel Admin</a>
         </div>
 
         <!-- Modal de Cadastro/Edição de Sinal -->
@@ -39,16 +39,11 @@
 
                     <div class="form-group">
                         <label>Categoria</label>
-                        <select th:field="*{category}" id="sign-category" required>
+                        <select th:field="*{category.id}" id="sign-category" required>
                             <option value="">Selecione...</option>
-                            <option value="Lógica">Lógica</option>
-                            <option value="Estruturas de Dados">Estruturas de Dados</option>
-                            <option value="Banco de Dados">Banco de Dados</option>
-                            <option value="Programação">Programação</option>
-                            <option value="Segurança">Segurança</option>
-                            <option value="Redes">Redes</option>
-                            <option value="Web">Web</option>
+                            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
                         </select>
+                        <div style="color: var(--cor-error); font-size: 0.8rem;" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
                     </div>
 
                     <div class="form-group">
@@ -64,7 +59,7 @@
             </div>
         </div>
 
-        <div class="table-container" style="margin-top: 3rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        <div class="table-container" style="margin-top: 3rem;">
             <table class="animate-fade">
                 <thead>
                     <tr>
@@ -77,13 +72,13 @@
                 <tbody>
                     <tr th:each="sign : ${signs}">
                         <td><strong th:text="${sign.term}">Termo</strong></td>
-                        <td><span class="categoria-tag" th:text="${sign.category}">Categoria</span></td>
+                        <td><span class="categoria-tag" th:text="${sign.category.name}">Categoria</span></td>
                         <td th:text="${#strings.abbreviate(sign.description, 60)}">Descrição...</td>
                         <td>
                             <div class="action-buttons">
                                 <button type="button" 
                                         class="btn btn-small btn-secondary" 
-                                        th:data-edit-sign="${'{&quot;id&quot;: ' + sign.id + ', &quot;term&quot;: &quot;' + #strings.escapeJavaScript(sign.term) + '&quot;, &quot;category&quot;: &quot;' + sign.category + '&quot;, &quot;description&quot;: &quot;' + #strings.escapeJavaScript(sign.description) + '&quot;, &quot;videoUrl&quot;: &quot;' + sign.videoUrl + '&quot;}'}">
+                                        th:data-edit-sign="${'{&quot;id&quot;: ' + sign.id + ', &quot;term&quot;: &quot;' + #strings.escapeJavaScript(sign.term) + '&quot;, &quot;category&quot;: ' + sign.category.id + ', &quot;description&quot;: &quot;' + #strings.escapeJavaScript(sign.description) + '&quot;, &quot;videoUrl&quot;: &quot;' + sign.videoUrl + '&quot;}'}">
                                     Editar
                                 </button>
                                 <a th:href="@{/admin/signs/delete/{id}(id=${sign.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-small" style="text-decoration: none; background: var(--cor-error);" data-confirm="Excluir este sinal permanentemente?">Remover</a>

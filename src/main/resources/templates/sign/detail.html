@@ -10,7 +10,7 @@
         <div class="animate-fade">
             <h1 th:text="${sign.term}"
                 style="font-size: 3.5rem; color: var(--cor-primary-dark); font-family: 'Outfit', sans-serif;">Termo</h1>
-            <div class="categoria-tag" th:text="${sign.category}" style="margin-bottom: 2rem;">Categoria</div>
+            <div class="categoria-tag" th:text="${sign.category.name}" style="margin-bottom: 2rem;">Categoria</div>
 
             <div class="video-container"
                 style="text-align: center; margin: 2rem 0; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
@@ -26,7 +26,8 @@
                 </div>
                 <div th:unless="${sign.videoUrl != null && !sign.videoUrl.isEmpty()}"
                     style="color: white; padding: 4rem;">
-                    <p style="font-size: 1.5rem;">📹 Vídeo em fase de produção</p>
+                    <p style="font-size: 1.5rem; margin-bottom: 1rem;">📹 Vídeo em fase de produção</p>
+                    <p style="font-size: 1.1rem; color: #B0B0B0;">Selecione o texto da descrição e utilize o assistente virtual <b>VLibras</b> (ícone na lateral da tela) para a tradução automática!</p>
                 </div>
             </div>
 

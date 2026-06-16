@@ -32,7 +32,7 @@
                     </div>
                     <h3 th:text="${sign.term}">Termo</h3>
                     <p th:text="${#strings.abbreviate(sign.description, 100)}">Descrição...</p>
-                    <div class="categoria-tag" th:text="${sign.category}">Categoria</div>
+                    <div class="categoria-tag" th:text="${sign.category.name}">Categoria</div>
                 </div>
             </a>
             

@@ -4,12 +4,18 @@
 <head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}">S.I.L - Info</title>
+    <title th:text="${title}">SIL</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
-    <meta th:if="${_csrf}" name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:if="${_csrf}" name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta th:if="${_csrf}" name="_csrf" th:content="${_csrf.token}" />
+    <meta th:if="${_csrf}" name="_csrf_header" th:content="${_csrf.headerName}" />
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     <script th:src="@{/js/script.js}" defer></script>
 </head>
 
@@ -17,7 +23,7 @@
 
     <header th:fragment="header" id="main-header">
         <div class="header-content">
-            <div class="logo">S.I.L - Info</div>
+            <div class="logo">SIL</div>
             <button class="hamburger" id="hamburger" aria-label="Menu">
                 <span></span>
                 <span></span>
@@ -38,7 +44,37 @@
     </header>
 
     <footer th:fragment="footer">
-        <p>&copy; 2025 S.I.L - Info - Sistema para Intérpretes de Libras na Área da Informática</p>
+        <p>&copy; 2026 SIL - Sistema para Intérpretes de Libras na Área da Informática</p>
+
+        <!-- Container para Toast Notifications (Estilo 2026) -->
+        <div id="toast-container" class="toast-container" th:data-toast-success="${success}"
+            th:data-toast-error="${error}"></div>
+
+        <!-- Modal de Confirmação Customizado (Estilo 2026) -->
+        <dialog id="custom-confirm-dialog" class="confirm-dialog">
+            <div class="confirm-dialog-content">
+                <div class="confirm-dialog-icon">⚠️</div>
+                <h3 id="confirm-dialog-title">Confirmar Ação</h3>
+                <p id="confirm-dialog-message">Você tem certeza que deseja realizar esta operação?</p>
+                <div class="confirm-dialog-buttons">
+                    <button id="confirm-dialog-cancel-btn" class="btn btn-secondary">Cancelar</button>
+                    <button id="confirm-dialog-confirm-btn" class="btn btn-danger">Confirmar</button>
+                </div>
+            </div>
+        </dialog>
+        <!-- VLibras Widget - Fallback e Acessibilidade (Apenas para usuários logados) -->
+        <th:block sec:authorize="isAuthenticated()">
+            <div vw class="enabled">
+                <div vw-access-button class="active"></div>
+                <div vw-plugin-wrapper>
+                    <div class="vw-plugin-top-wrapper"></div>
+                </div>
+            </div>
+            <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+            <script>
+                new window.VLibras.Widget('https://vlibras.gov.br/app');
+            </script>
+        </th:block>
     </footer>
 
 </body>

@@ -8,9 +8,9 @@
         <h1 style="font-family: 'Outfit', sans-serif;">Gerenciar Usuários</h1>
         <p style="margin-bottom: 2rem; color: var(--cor-text-secondary);" th:text="'Total de usuários cadastrados: ' + ${users.size()}">Total: 0</p>
         
-        <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem;">
-            <button data-modal-open="user-modal" class="btn" style="display: inline-block;">+ Adicionar Novo Usuário</button>
-            <a th:href="@{/admin}" class="btn btn-secondary" style="display: inline-block; text-decoration: none;">← Voltar ao Painel Admin</a>
+        <div class="admin-actions" style="margin-bottom: 2rem;">
+            <button data-modal-open="user-modal" class="btn">+ Adicionar Novo Usuário</button>
+            <a th:href="@{/admin}" class="btn btn-secondary">← Voltar ao Painel Admin</a>
         </div>
 
         <!-- Modal de Cadastro/Edição de Usuário -->
@@ -59,7 +59,7 @@
             </div>
         </div>
         
-        <div class="table-container" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        <div class="table-container">
             <table class="animate-fade">
                 <thead>
                     <tr>

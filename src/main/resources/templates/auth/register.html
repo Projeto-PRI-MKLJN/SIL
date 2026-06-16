@@ -9,7 +9,7 @@
             <div class="container">
                 <h1>Criar Conta</h1>
                 <form th:action="@{/auth/register}" th:object="${user}" method="post">
-                    <div th:if="${errorMessage}" style="background: #fee2e2; color: #b91c1c; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    <div th:if="${errorMessage}" style="background: rgba(239, 83, 80, 0.15); color: var(--cor-error); border: 1px solid rgba(239, 83, 80, 0.3); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
                         <p th:text="${errorMessage}"></p>
                     </div>
                     <div class="form-group">

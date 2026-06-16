@@ -19,6 +19,14 @@
                 </div>
             </a>
 
+            <a th:href="@{/admin/categories}" class="sinal-card-link" sec:authorize="hasRole('ADMIN')">
+                <div class="sinal-card" style="text-align: center; padding: 2rem; border: 2px solid transparent; transition: all 0.3s ease;">
+                    <span style="font-size: 3rem; margin-bottom: 1rem; display: block;">🏷️</span>
+                    <h3 style="color: var(--cor-primary-dark);">Gerenciar Categorias</h3>
+                    <p style="font-size: 0.9rem;">Adicione, edite ou remova as categorias do glossário.</p>
+                </div>
+            </a>
+
             <a th:href="@{/admin/users}" class="sinal-card-link" sec:authorize="hasRole('ADMIN')">
                 <div class="sinal-card" style="text-align: center; padding: 2rem; border: 2px solid transparent; transition: all 0.3s ease;">
                     <span style="font-size: 3rem; margin-bottom: 1rem; display: block;">👥</span>
