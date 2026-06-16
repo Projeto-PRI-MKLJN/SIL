@@ -1,8 +1,11 @@
 package com.sil.informatica.modules.user;
 
+import com.sil.informatica.modules.favorite.Favorite;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /// Representa um usuário autenticável do sistema SIL-Informatica.
@@ -31,6 +34,9 @@ public class User {
 
     @Column(nullable = false)
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
 
     /// Construtor padrão exigido pelo JPA.
     public User() {
@@ -87,6 +93,14 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<Favorite> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<Favorite> favorites) {
+        this.favorites = favorites;
     }
 
     @Override

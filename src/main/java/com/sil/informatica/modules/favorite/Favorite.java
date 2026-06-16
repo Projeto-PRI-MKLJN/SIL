@@ -4,6 +4,9 @@ import com.sil.informatica.modules.sign.Sign;
 import com.sil.informatica.modules.user.User;
 import jakarta.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 /// Representa a associação de "favorito" entre um usuário e um sinal técnico.
 ///
 /// Esta entidade é fundamental para a personalização da experiência do [User] dentro do glossário.
@@ -17,10 +20,12 @@ public class Favorite {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "sign_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Sign sign;
 
     /// Construtor padrão para o provedor de persistência.

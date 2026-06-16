@@ -1,11 +1,11 @@
 package com.sil.informatica.modules.user;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-import java.util.Optional;
 
 /// Serviço responsável pelo gerenciamento de usuários e validação de regras de domínio.
 ///

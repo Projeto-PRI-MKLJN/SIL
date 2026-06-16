@@ -1,7 +1,12 @@
 package com.sil.informatica.modules.sign;
 
+import com.sil.informatica.modules.category.Category;
+import com.sil.informatica.modules.favorite.Favorite;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /// Representa um termo técnico (sinal) no glossário de informática.
@@ -24,11 +29,15 @@ public class Sign {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @NotBlank(message = "A categoria é obrigatória")
-    @Column(nullable = false)
-    private String category;
+    @NotNull(message = "A categoria é obrigatória")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
     private String videoUrl;
+
+    @OneToMany(mappedBy = "sign", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
 
     /// Construtor padrão exigido pelo JPA.
     public Sign() {
@@ -40,7 +49,7 @@ public class Sign {
     /// @param description Explicação detalhada do termo.
     /// @param category Categoria à qual o termo pertence (ex: Programação).
     /// @param videoUrl Link para o vídeo demonstrativo do sinal.
-    public Sign(String term, String description, String category, String videoUrl) {
+    public Sign(String term, String description, Category category, String videoUrl) {
         this.term = term;
         this.description = description;
         this.category = category;
@@ -71,11 +80,11 @@ public class Sign {
         this.description = description;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -85,6 +94,14 @@ public class Sign {
 
     public void setVideoUrl(String videoUrl) {
         this.videoUrl = videoUrl;
+    }
+
+    public List<Favorite> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<Favorite> favorites) {
+        this.favorites = favorites;
     }
 
     /**
