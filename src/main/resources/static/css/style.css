@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scrollbar-gutter: stable;
+}
+
 :root {
     /* Tema Claro (WCAG 2.1 AA) - Ajustado para fundo branco e contraste de texto secundário */
     --cor-primary: #0057B8;
@@ -29,7 +33,7 @@
     /* Fundo do cabeçalho */
     --cor-footer-bg: #004494;
     /* Fundo do rodapé */
-    --cor-success: #2E7D32;
+    --cor-success: #00875A;
     /* Verde de sucesso */
     --cor-error: #C62828;
     /* Vermelho de erro */
@@ -784,6 +788,22 @@ a:hover {
         width: 100%;
         text-align: center;
     }
+
+    .action-buttons {
+        width: 100%;
+        display: flex;
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+    }
+
+    .action-buttons .btn,
+    .action-buttons a {
+        flex: 1;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1057,35 +1077,32 @@ body.auth-page .hamburger {
 
 .toast {
     pointer-events: auto;
-    background: var(--cor-white);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--cor-card-bg);
     color: var(--cor-text);
-    border-radius: 16px;
-    padding: 1.2rem 1.5rem;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.8rem;
     min-width: 320px;
     max-width: 420px;
-    font-family: 'Outfit', sans-serif;
-    border: 1px solid var(--cor-border);
+    font-family: inherit;
+    border: 1.5px solid var(--cor-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .toast-success {
-    border-left: 5px solid #2ecc71;
-    box-shadow: 0 10px 30px rgba(46, 204, 113, 0.12), 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-color: var(--cor-success);
 }
 
 .toast-error {
-    border-left: 5px solid var(--cor-error);
-    box-shadow: 0 10px 30px rgba(239, 83, 80, 0.12), 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-color: var(--cor-error);
 }
 
 .toast-icon-wrapper {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1094,12 +1111,12 @@ body.auth-page .hamburger {
 }
 
 .toast-success .toast-icon-wrapper {
-    background: rgba(46, 204, 113, 0.12);
-    color: #2ecc71;
+    background: rgba(0, 135, 90, 0.12);
+    color: var(--cor-success);
 }
 
 .toast-error .toast-icon-wrapper {
-    background: rgba(239, 83, 80, 0.12);
+    background: rgba(198, 40, 40, 0.12);
     color: var(--cor-error);
 }
 
@@ -1215,4 +1232,51 @@ body.auth-page .hamburger {
     .modal-content {
         padding: 1.5rem;
     }
+}
+
+/* =========================
+   PASSWORD FIELD SHOW/HIDE
+   ========================= */
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-container input {
+    padding-right: 2.75rem !important; /* Espaço para o botão do olho */
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 0.75rem;
+    background: none !important;
+    border: none !important;
+    cursor: pointer;
+    color: var(--cor-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem !important;
+    transition: color 0.2s, transform 0.2s;
+    outline: none;
+    box-shadow: none !important;
+}
+
+.toggle-password-btn:hover {
+    color: var(--cor-primary) !important;
+    transform: scale(1.1);
+}
+
+.toggle-password-btn svg {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+/* Hides native browser reveal buttons */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
 }
