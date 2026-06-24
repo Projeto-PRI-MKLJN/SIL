@@ -110,6 +110,25 @@ public class Sign {
     public String getYoutubeThumbnailUrl() {
         if (videoUrl == null || videoUrl.isEmpty()) return null;
         
+        // Suporte para Google Drive
+        if (videoUrl.contains("drive.google.com")) {
+            try {
+                if (videoUrl.contains("file/d/")) {
+                    String[] parts = videoUrl.split("file/d/");
+                    if (parts.length > 1) {
+                        return "https://drive.google.com/thumbnail?id=" + parts[1].split("/")[0].split("\\?")[0] + "&sz=w400";
+                    }
+                } else if (videoUrl.contains("id=")) {
+                    String[] parts = videoUrl.split("id=");
+                    if (parts.length > 1) {
+                        return "https://drive.google.com/thumbnail?id=" + parts[1].split("&")[0] + "&sz=w400";
+                    }
+                }
+            } catch (Exception e) {
+                // Fallback silencioso
+            }
+        }
+
         String videoId = null;
         if (videoUrl.contains("youtube.com/watch?v=")) {
             videoId = videoUrl.split("v=")[1].split("&")[0];

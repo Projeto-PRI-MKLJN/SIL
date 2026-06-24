@@ -16,10 +16,18 @@
                 style="text-align: center; margin: 2rem 0; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
                 <div th:if="${sign.videoUrl != null && !sign.videoUrl.isEmpty()}"
                     style="width: 100%; aspect-ratio: 16/9;">
-                    <iframe th:if="${#strings.contains(sign.videoUrl, 'youtube.com')}" width="100%" height="100%"
-                        th:src="${#strings.replace(sign.videoUrl, 'watch?v=', 'embed/')}" frameborder="0"
+                    <!-- Vídeo do YouTube -->
+                    <iframe th:if="${#strings.contains(sign.videoUrl, 'youtube.com') || #strings.contains(sign.videoUrl, 'youtu.be')}" width="100%" height="100%"
+                        th:src="${#strings.contains(sign.videoUrl, 'youtube.com') ? #strings.replace(sign.videoUrl, 'watch?v=', 'embed/') : #strings.replace(sign.videoUrl, 'youtu.be/', 'youtube.com/embed/')}" frameborder="0"
                         allowfullscreen></iframe>
-                    <video th:unless="${#strings.contains(sign.videoUrl, 'youtube.com')}" controls
+                    
+                    <!-- Vídeo do Google Drive -->
+                    <iframe th:if="${#strings.contains(sign.videoUrl, 'drive.google.com')}" width="100%" height="100%"
+                        th:src="${#strings.replace(sign.videoUrl, '/view', '/preview')}" frameborder="0"
+                        allowfullscreen></iframe>
+                    
+                    <!-- Vídeo Direto (MP4) -->
+                    <video th:unless="${#strings.contains(sign.videoUrl, 'youtube.com') || #strings.contains(sign.videoUrl, 'youtu.be') || #strings.contains(sign.videoUrl, 'drive.google.com')}" controls
                         style="width: 100%; height: 100%;">
                         <source th:src="${sign.videoUrl}" type="video/mp4">
                     </video>

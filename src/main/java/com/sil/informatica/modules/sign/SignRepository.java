@@ -16,4 +16,5 @@ public interface SignRepository extends JpaRepository<Sign, Long> {
     /// @return Uma lista de [Sign] filtrados.
     List<Sign> findByTermContainingIgnoreCase(String term);
     List<Sign> findByTermStartingWithIgnoreCase(String letter);
+    java.util.Optional<Sign> findByTermIgnoreCase(String term);
 }

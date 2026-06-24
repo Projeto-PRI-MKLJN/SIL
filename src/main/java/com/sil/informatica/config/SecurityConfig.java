@@ -59,8 +59,8 @@ public class SecurityConfig {
                                                                 "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://fonts.googleapis.com https://*.vlibras.gov.br https://vlibras.gov.br https://cdn.jsdelivr.net; " +
                                                                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; " +
                                                                 "font-src 'self' data: https://fonts.gstatic.com https://*.vlibras.gov.br https://vlibras.gov.br https://cdn.jsdelivr.net; " +
-                                                                "frame-src 'self' https://www.youtube.com https://youtube.com; " +
-                                                                "img-src 'self' data: blob: https://img.youtube.com https://*.vlibras.gov.br https://vlibras.gov.br https://cdn.jsdelivr.net; " +
+                                                                "frame-src 'self' https://www.youtube.com https://youtube.com https://drive.google.com; " +
+                                                                "img-src 'self' data: blob: https://img.youtube.com https://drive.google.com https://*.googleusercontent.com https://*.vlibras.gov.br https://vlibras.gov.br https://cdn.jsdelivr.net; " +
                                                                 "connect-src 'self' https://*.vlibras.gov.br https://vlibras.gov.br https://cdn.jsdelivr.net; " +
                                                                 "worker-src 'self' blob:; " +
                                                                 "media-src 'self' blob:;")))
