@@ -35,7 +35,7 @@
                 <a th:href="@{/favorites}" sec:authorize="isAuthenticated()">Favoritos</a>
                 <a th:href="@{/users/profile}" sec:authorize="isAuthenticated()">Meu Perfil</a>
                 <a th:href="@{/home/about}" sec:authorize="isAuthenticated()">Sobre</a>
-                <a th:href="@{/admin}" sec:authorize="hasAnyRole('ADMIN', 'USER')">Painel Admin</a>
+                <a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Painel Admin</a>
                 <a th:href="@{/auth/logout}" sec:authorize="isAuthenticated()">Sair</a>
                 <a th:href="@{/auth/login}" sec:authorize="isAnonymous()">Entrar</a>
             </nav>

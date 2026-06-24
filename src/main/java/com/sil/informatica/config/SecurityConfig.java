@@ -27,10 +27,8 @@ public class SecurityConfig {
                                                 // Apenas telas de autenticação e recursos estáticos são públicos
                                                 .requestMatchers("/auth/**", "/css/**", "/js/**", "/img/**", "/favicon.ico")
                                                 .permitAll()
-                                                // Área administrativa exige perfil ADMIN ou USER (Intérpretes)
-                                                .requestMatchers("/admin/signs/delete/**").hasRole("ADMIN")
-                                                .requestMatchers("/admin/signs", "/admin/signs/**").hasAnyRole("ADMIN", "USER")
-                                                .requestMatchers("/admin/users", "/admin/users/**").hasRole("ADMIN")
+                                                // Área administrativa exige perfil ADMIN
+                                                .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
                                                 // Qualquer outra requisição (Dashboard, Favoritos) exige autenticação
                                                 .anyRequest().authenticated())
                                 .formLogin(login -> login
