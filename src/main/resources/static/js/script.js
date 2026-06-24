@@ -108,7 +108,7 @@ const ModalManager = {
                 form.reset();
                 const idField = form.elements['id'];
                 if (idField) idField.value = '';
-                
+
                 const title = modal.querySelector('h2');
                 if (title) {
                     if (id === 'sign-modal') title.innerText = 'Novo Sinal';
@@ -255,10 +255,11 @@ window.openEditSignModal = (data) => {
     document.getElementById('modal-title').innerText = 'Editar Sinal';
     if (form.elements['id']) form.elements['id'].value = data.id || '';
     if (form.elements['term']) form.elements['term'].value = data.term || '';
-    if (form.elements['category']) form.elements['category'].value = data.category || '';
+    const catField = form.elements['category'] || form.elements['category.id'] || document.getElementById('sign-category');
+    if (catField) catField.value = data.category || '';
     if (form.elements['description']) form.elements['description'].value = data.description || '';
     if (form.elements['videoUrl']) form.elements['videoUrl'].value = data.videoUrl || '';
-    
+
     ModalManager.open('sign-modal', true);
 };
 

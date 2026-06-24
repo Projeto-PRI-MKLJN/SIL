@@ -26,13 +26,29 @@
 
                     <div class="form-group">
                         <label>Senha</label>
-                        <input type="password" th:field="*{password}" required minlength="6" placeholder="Mínimo 6 caracteres">
+                        <div class="password-container">
+                            <input type="password" th:field="*{password}" required minlength="6" placeholder="Mínimo 6 caracteres">
+                            <button type="button" class="toggle-password-btn" aria-label="Mostrar senha">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
                         <div style="color: var(--cor-error); font-size: 0.8rem;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     </div>
 
                     <div class="form-group">
                         <label>Confirmar Senha</label>
-                        <input type="password" id="cadastro-confirma" name="confirmPassword" required minlength="6" placeholder="Digite a senha novamente">
+                        <div class="password-container">
+                            <input type="password" id="cadastro-confirma" name="confirmPassword" required minlength="6" placeholder="Digite a senha novamente">
+                            <button type="button" class="toggle-password-btn" aria-label="Mostrar senha">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn">Cadastrar</button>
