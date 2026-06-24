@@ -59,11 +59,11 @@ function filtrarSinais() {
     if (!input) return;
 
     const termo = input.value.toLowerCase().trim();
-    const cards = document.querySelectorAll('.sinal-card');
+    const links = document.querySelectorAll('.sinal-card-link');
 
-    cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(termo) ? 'flex' : 'none';
+    links.forEach(link => {
+        const text = link.innerText.toLowerCase();
+        link.style.display = text.includes(termo) ? 'block' : 'none';
     });
 }
 
@@ -73,7 +73,7 @@ const MenuManager = {
             const hamburger = document.getElementById('hamburger');
             const nav = document.getElementById('main-nav');
             const overlay = document.getElementById('nav-overlay');
-            
+
             if (!hamburger || !nav || !overlay) return;
 
             if (hamburger.contains(e.target)) {
