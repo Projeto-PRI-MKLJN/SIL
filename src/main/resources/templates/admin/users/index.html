@@ -39,14 +39,22 @@
 
                     <div class="form-group">
                         <label id="user-password-label">Senha Inicial</label>
-                        <input type="password" th:field="*{password}" id="user-password" required placeholder="Mínimo 6 caracteres">
+                        <div class="password-container">
+                            <input type="password" th:field="*{password}" id="user-password" required placeholder="Mínimo 6 caracteres">
+                            <button type="button" class="toggle-password-btn" aria-label="Mostrar senha">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
                         <div style="color: var(--cor-error); font-size: 0.8rem;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     </div>
 
                     <div class="form-group">
                         <label>Perfil de Acesso</label>
                         <select th:field="*{role}" id="user-role" required>
-                            <option value="USER">Usuário Comum</option>
+                            <option value="USER">Intérprete</option>
                             <option value="ADMIN">Administrador</option>
                         </select>
                     </div>
@@ -73,12 +81,15 @@
                     <tr th:each="u : ${users}">
                         <td><strong th:text="${u.name}">Nome</strong></td>
                         <td th:text="${u.email}">E-mail</td>
-                        <td><span class="categoria-tag" th:text="${u.role}">USER</span></td>
+                        <td><span class="categoria-tag" th:text="${u.role == 'ADMIN' ? 'Administrador' : 'Intérprete'}">USER</span></td>
                         <td>
                             <div class="action-buttons">
                                 <button type="button" 
-                                        class="btn btn-small btn-secondary" 
-                                        th:data-edit-user="${'{&quot;id&quot;: ' + u.id + ', &quot;name&quot;: &quot;' + #strings.escapeJavaScript(u.name) + '&quot;, &quot;email&quot;: &quot;' + u.email + '&quot;, &quot;role&quot;: &quot;' + u.role + '&quot;}'}">
+                                        class="btn btn-small btn-secondary btn-edit-user" 
+                                        th:data-id="${u.id}"
+                                        th:data-name="${u.name}"
+                                        th:data-email="${u.email}"
+                                        th:data-role="${u.role}">
                                     Editar
                                 </button>
                                 <a th:href="@{/admin/users/delete/{id}(id=${u.id})}" class="btn btn-small" style="text-decoration: none; background: var(--cor-error);" data-confirm="Desativar este usuário?">Remover</a>

@@ -185,7 +185,7 @@ const ToastManager = {
 
         const successMsg = this.container.dataset.toastSuccess;
         const errorMsg = this.container.dataset.toastError;
-        
+
         if (successMsg && successMsg !== 'null' && successMsg !== '') {
             this.show(successMsg, 'success');
         }
@@ -199,7 +199,7 @@ const ToastManager = {
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type} animate-slide-in`;
-        
+
         const title = type === 'success' ? 'Sucesso' : 'Erro';
         const iconSvg = type === 'success' ? `
             <svg class="toast-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -271,19 +271,19 @@ window.openEditUserModal = (data) => {
     if (form.elements['name']) form.elements['name'].value = data.name || '';
     if (form.elements['email']) form.elements['email'].value = data.email || '';
     if (form.elements['role']) form.elements['role'].value = data.role || '';
-    
+
     const passwordInput = form.elements['password'];
     if (passwordInput) {
         passwordInput.required = false;
         passwordInput.placeholder = 'Deixe em branco para manter a atual';
     }
-    
+
     const label = document.getElementById('user-password-label');
     if (label) label.innerText = 'Nova Senha (opcional)';
-    
+
     const submitBtn = document.getElementById('user-submit-btn');
     if (submitBtn) submitBtn.innerText = 'Salvar Alterações';
-    
+
     ModalManager.open('user-modal', true);
 };
 
@@ -292,28 +292,62 @@ document.addEventListener('DOMContentLoaded', () => {
     MenuManager.init();
     ConfirmDialogManager.init();
     ToastManager.init();
-    
+
     // Gerenciador de eventos delegado para evitar inline JS (CSP)
     document.body.addEventListener('click', (e) => {
         const target = e.target;
+
+        const togglePasswordBtn = target.closest('.toggle-password-btn');
+        if (togglePasswordBtn) {
+            e.preventDefault();
+            const input = togglePasswordBtn.parentNode.querySelector('input');
+            if (input) {
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                if (isPassword) {
+                    togglePasswordBtn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    `;
+                } else {
+                    togglePasswordBtn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    `;
+                }
+            }
+            return;
+        }
+
         const openBtn = target.closest('[data-modal-open]');
         if (openBtn) ModalManager.open(openBtn.dataset.modalOpen);
 
         const closeBtn = target.closest('[data-modal-close]');
         if (closeBtn) ModalManager.close(closeBtn.dataset.modalClose);
 
-        const editSignBtn = target.closest('[data-edit-sign]');
+        const editSignBtn = target.closest('.btn-edit-sign');
         if (editSignBtn) {
-            try {
-                window.openEditSignModal(JSON.parse(editSignBtn.dataset.editSign));
-            } catch (err) { console.error(err); }
+            window.openEditSignModal({
+                id: editSignBtn.dataset.id,
+                term: editSignBtn.dataset.term,
+                category: editSignBtn.dataset.category,
+                description: editSignBtn.dataset.description,
+                videoUrl: editSignBtn.dataset.videoUrl
+            });
         }
 
-        const editUserBtn = target.closest('[data-edit-user]');
+        const editUserBtn = target.closest('.btn-edit-user');
         if (editUserBtn) {
-            try {
-                window.openEditUserModal(JSON.parse(editUserBtn.dataset.editUser));
-            } catch (err) { console.error(err); }
+            window.openEditUserModal({
+                id: editUserBtn.dataset.id,
+                name: editUserBtn.dataset.name,
+                email: editUserBtn.dataset.email,
+                role: editUserBtn.dataset.role
+            });
         }
 
         const confirmBtn = target.closest('[data-confirm]');
@@ -322,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = confirmBtn.dataset.confirm;
             const targetUrl = confirmBtn.getAttribute('href');
             const targetForm = confirmBtn.closest('form');
-            
+
             ConfirmDialogManager.open(message, () => {
                 if (targetUrl && targetUrl !== '#') {
                     window.location.href = targetUrl;
@@ -344,7 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = favForm.querySelector('button');
             const span = btn.querySelector('span');
             const isAdding = !btn.classList.contains('btn-favorited');
-            
+
             btn.classList.toggle('btn-favorited');
             span.innerText = isAdding ? '★ Adicionado aos Favoritos' : '☆ Adicionar aos Favoritos';
 

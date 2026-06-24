@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{fragments/layout :: head('S.I.L - Favoritos')}"></head>
+
 <body>
     <header th:replace="~{fragments/layout :: header}"></header>
 
     <main class="container">
         <h1 style="font-family: 'Outfit', sans-serif;">Meus Favoritos</h1>
-        <p th:text="${favorites.size() + (favorites.size() == 1 ? ' sinal salvo' : ' sinais salvos')}" style="margin-bottom: 2rem; color: var(--cor-text-secondary);"></p>
+        <p th:text="${favorites.size() + (favorites.size() == 1 ? ' sinal salvo' : ' sinais salvos')}"
+            style="margin-bottom: 2rem; color: var(--cor-text-secondary);"></p>
 
         <div class="sinais-grid animate-fade">
-            <div th:each="favorite : ${favorites}" class="sinal-card-link-container" style="display: flex; flex-direction: column;">
-                <a th:href="@{/signs/{id}(id=${favorite.sign.id})}" class="sinal-card-link">
-                    <div class="sinal-card">
-                        <h3 th:text="${favorite.sign.term}">Termo</h3>
-                        <p th:text="${#strings.abbreviate(favorite.sign.description, 80)}">Descrição...</p>
-                        <div class="categoria-tag" th:text="${favorite.sign.category}">Categoria</div>
+            <div th:each="favorite : ${favorites}" class="sinal-card"
+                style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <a th:href="@{/signs/{id}(id=${favorite.sign.id})}" class="sinal-card-link"
+                    style="color: inherit; text-decoration: none; display: flex; flex-direction: column; flex-grow: 1;">
+                    <div class="sinal-thumb">
+                        <img th:if="${favorite.sign.youtubeThumbnailUrl != null}"
+                            th:src="${favorite.sign.youtubeThumbnailUrl}" referrerpolicy="no-referrer" alt="Thumbnail"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                        <span th:style="${favorite.sign.youtubeThumbnailUrl != null ? 'display: none;' : ''}">📖</span>
                     </div>
+                    <h3 th:text="${favorite.sign.term}">Termo</h3>
+                    <p th:text="${#strings.abbreviate(favorite.sign.description, 80)}">Descrição...</p>
+                    <div class="categoria-tag" th:text="${favorite.sign.category.name}">Categoria</div>
                 </a>
-                <form th:action="@{/favorites/remove/{id}(id=${favorite.id})}" method="post" style="margin-top: 1rem; text-align: center;">
-                    <button type="submit" style="background: none; border: none; color: var(--cor-error); font-weight: bold; cursor: pointer; padding: 0.5rem; width: 100%;">Remover</button>
+                <form th:action="@{/favorites/remove/{id}(id=${favorite.id})}" method="post"
+                    style="margin-top: 1rem; text-align: center; border-top: 1px solid var(--cor-border); padding-top: 0.5rem;">
+                    <button type="submit"
+                        style="background: none; border: none; color: var(--cor-error); font-weight: bold; cursor: pointer; padding: 0.5rem; width: 100%;">Remover</button>
                 </form>
             </div>
 
@@ -31,4 +43,5 @@
 
     <footer th:replace="~{fragments/layout :: footer}"></footer>
 </body>
+
 </html>

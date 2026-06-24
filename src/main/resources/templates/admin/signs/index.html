@@ -73,12 +73,21 @@
                     <tr th:each="sign : ${signs}">
                         <td><strong th:text="${sign.term}">Termo</strong></td>
                         <td><span class="categoria-tag" th:text="${sign.category.name}">Categoria</span></td>
-                        <td th:text="${#strings.abbreviate(sign.description, 60)}">Descrição...</td>
+                        <!-- Se a descrição for longa (> 60 caracteres), renderiza a versão interativa expansível -->
+                        <td th:if="${#strings.length(sign.description) > 60}" class="desc-cell" style="cursor: pointer; max-width: 300px;" onclick="const t = this.querySelector('.truncated-text'); const f = this.querySelector('.full-text'); if(f.style.display === 'none') { f.style.display = 'inline'; t.style.display = 'none'; } else { f.style.display = 'none'; t.style.display = 'inline'; }" th:title="'Clique para expandir ou recolher'">
+                            <span class="truncated-text"><span th:text="${#strings.abbreviate(sign.description, 60)}"></span><small style="color: var(--cor-primary); font-size: 0.75rem; display: block; margin-top: 0.25rem; font-weight: 500;">(clique para ver mais)</small></span><span class="full-text" style="display: none;"><span style="white-space: pre-wrap;" th:text="${sign.description}"></span><small style="color: var(--cor-primary); font-size: 0.75rem; display: block; margin-top: 0.25rem; font-weight: 500;">(clique para recolher)</small></span>
+                        </td>
+                        <!-- Se for curta (<= 60 caracteres), exibe o texto plano diretamente sem cliques ou avisos -->
+                        <td th:unless="${#strings.length(sign.description) > 60}" style="max-width: 300px; white-space: pre-wrap;" th:text="${sign.description}">Descrição...</td>
                         <td>
                             <div class="action-buttons">
                                 <button type="button" 
-                                        class="btn btn-small btn-secondary" 
-                                        th:data-edit-sign="${'{&quot;id&quot;: ' + sign.id + ', &quot;term&quot;: &quot;' + #strings.escapeJavaScript(sign.term) + '&quot;, &quot;category&quot;: ' + sign.category.id + ', &quot;description&quot;: &quot;' + #strings.escapeJavaScript(sign.description) + '&quot;, &quot;videoUrl&quot;: &quot;' + sign.videoUrl + '&quot;}'}">
+                                        class="btn btn-small btn-secondary btn-edit-sign" 
+                                        th:data-id="${sign.id}"
+                                        th:data-term="${sign.term}"
+                                        th:data-category="${sign.category.id}"
+                                        th:data-description="${sign.description}"
+                                        th:data-video-url="${sign.videoUrl}">
                                     Editar
                                 </button>
                                 <a th:href="@{/admin/signs/delete/{id}(id=${sign.id})}" sec:authorize="hasRole('ADMIN')" class="btn btn-small" style="text-decoration: none; background: var(--cor-error);" data-confirm="Excluir este sinal permanentemente?">Remover</a>

@@ -43,15 +43,13 @@
             <table class="animate-fade">
                 <thead>
                     <tr>
-                        <th style="width: 10%;">ID</th>
-                        <th style="width: 60%;">Nome da Categoria</th>
+                        <th style="width: 70%;">Nome da Categoria</th>
                         <th style="width: 30%;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="cat : ${categories}">
-                        <td><strong th:text="${cat.id}">ID</strong></td>
-                        <td><span class="categoria-tag" th:text="${cat.name}">Categoria</span></td>
+                        <td><strong th:text="${cat.name}">Categoria</strong></td>
                         <td>
                             <div class="action-buttons">
                                 <button type="button" 
@@ -65,7 +63,7 @@
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(categories)}">
-                        <td colspan="3" style="text-align: center; padding: 4rem; color: var(--cor-text-secondary);">Nenhuma categoria cadastrada.</td>
+                        <td colspan="2" style="text-align: center; padding: 4rem; color: var(--cor-text-secondary);">Nenhuma categoria cadastrada.</td>
                     </tr>
                 </tbody>
             </table>
